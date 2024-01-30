@@ -1,1 +1,1 @@
-# ebook-platform-nestjs
+# ebook-platform
