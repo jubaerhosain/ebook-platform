@@ -20,4 +20,9 @@ export class BooksRepository {
         });
         return book;
     }
+
+    async findAll(): Promise<BookDto[]> {
+        const book = await this.prismaService.book.findMany();
+        return book;
+    }
 }

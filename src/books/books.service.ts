@@ -13,7 +13,7 @@ export class BooksService {
     }
 
     findAll(): Promise<BookDto[]> {
-        return null;
+        return this.booksRepository.findAll();
     }
 
     findOne(id: number): Promise<BookDto> {

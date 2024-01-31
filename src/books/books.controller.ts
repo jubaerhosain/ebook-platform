@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { BookDto } from './dto/book.dto';
+import { BookQueryDto } from './dto/book-query.dto';
 
 @Controller('books')
 export class BooksController {
@@ -14,7 +15,7 @@ export class BooksController {
     }
 
     @Get()
-    findAll(): Promise<BookDto[]> {
+    findAll(@Query() bookQueryDto: BookQueryDto): Promise<BookDto[]> {
         return this.booksService.findAll();
     }
 
