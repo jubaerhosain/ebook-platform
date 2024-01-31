@@ -3,6 +3,7 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { BooksRepository } from './books.repository';
 import { BookDto } from './dto/book.dto';
+import { BookQueryDto } from './dto/book-query.dto';
 
 @Injectable()
 export class BooksService {
@@ -12,8 +13,8 @@ export class BooksService {
         return await this.booksRepository.create(createBookDto);
     }
 
-    findAll(): Promise<BookDto[]> {
-        return this.booksRepository.findAll();
+    findAll(query: BookQueryDto): Promise<BookDto[]> {
+        return this.booksRepository.findAll(query);
     }
 
     findOne(id: number): Promise<BookDto> {

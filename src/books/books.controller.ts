@@ -15,8 +15,8 @@ export class BooksController {
     }
 
     @Get()
-    findAll(@Query() bookQueryDto: BookQueryDto): Promise<BookDto[]> {
-        return this.booksService.findAll();
+    findAll(@Query() query: BookQueryDto): Promise<BookDto[]> {
+        return this.booksService.findAll(query);
     }
 
     @Get(':id')
