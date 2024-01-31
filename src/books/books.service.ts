@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { BooksRepository } from './books.repository';
+import { BookDto } from './dto/book.dto';
 
 @Injectable()
 export class BooksService {
     constructor(private readonly booksRepository: BooksRepository ) {}
 
-    create(createBookDto: CreateBookDto) {
-        return 'This action adds a new book';
+    async create(createBookDto: CreateBookDto): Promise<BookDto> {
+        return await this.booksRepository.create(createBookDto);
     }
 
     findAll() {
