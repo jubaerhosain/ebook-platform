@@ -7,7 +7,7 @@ export class PrismaService extends PrismaClient {
         super({
             datasources: {
                 db: {
-                    url: 'mysql://root:igloo1119@localhost:3306/ebook?schema=public',
+                    url: process.env.DATABASE_URL,
                 },
             },
         });
