@@ -22,17 +22,20 @@ export class BooksController {
     }
 
     @Get()
-    findAll() {
+    findAll(): Promise<BookDto[]> {
         return this.booksService.findAll();
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
+    findOne(@Param('id') id: string): Promise<BookDto> {
         return this.booksService.findOne(+id);
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
+    update(
+        @Param('id') id: string,
+        @Body() updateBookDto: UpdateBookDto,
+    ): Promise<BookDto> {
         return this.booksService.update(+id, updateBookDto);
     }
 

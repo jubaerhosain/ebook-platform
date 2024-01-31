@@ -12,16 +12,16 @@ export class BooksService {
         return await this.booksRepository.create(createBookDto);
     }
 
-    findAll() {
-        return `This action returns all books`;
+    findAll(): Promise<BookDto[]> {
+        return null;
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} book`;
+    findOne(id: number): Promise<BookDto> {
+        return null;
     }
 
-    update(id: number, updateBookDto: UpdateBookDto) {
-        return `This action updates a #${id} book`;
+    update(id: number, updateBookDto: UpdateBookDto): Promise<BookDto> {
+        return null;
     }
 
     remove(id: number) {
