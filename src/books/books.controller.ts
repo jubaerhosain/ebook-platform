@@ -10,9 +10,6 @@ export class BooksController {
 
     @Post()
     async create(@Body() createBookDto: CreateBookDto): Promise<BookDto> {
-        console.log(createBookDto);
-
-        return null;
         return await this.booksService.create(createBookDto);
     }
 

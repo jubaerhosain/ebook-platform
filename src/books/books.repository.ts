@@ -13,4 +13,11 @@ export class BooksRepository {
         });
         return book;
     }
+
+    async findOne(id: number): Promise<BookDto> {
+        const book = await this.prismaService.book.findUnique({
+            where: { id: id },
+        });
+        return book;
+    }
 }

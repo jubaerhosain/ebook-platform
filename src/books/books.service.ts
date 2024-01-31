@@ -17,7 +17,7 @@ export class BooksService {
     }
 
     findOne(id: number): Promise<BookDto> {
-        return null;
+        return this.booksRepository.findOne(id);
     }
 
     update(id: number, updateBookDto: UpdateBookDto): Promise<BookDto> {
