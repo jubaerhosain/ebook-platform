@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { BooksRepository } from './books.repository';
@@ -21,7 +21,7 @@ export class BooksService {
         const book = await this.booksRepository.findOne(id);
 
         if (!book) {
-            throw new HttpException(`book with id: ${id} was not found`, HttpStatus.NOT_FOUND);
+            throw new NotFoundException({ message: `book with id: ${id} was not found` });
         }
 
         return book;
@@ -31,7 +31,7 @@ export class BooksService {
         const isExists = await this.booksRepository.isExistById(id);
 
         if (!isExists) {
-            throw new HttpException(`book with id: ${id} was not found`, HttpStatus.NOT_FOUND);
+            throw new NotFoundException({ message: `book with id: ${id} was not found` });
         }
 
         const updatedBook = await this.booksRepository.update(id, updateBookDto);
