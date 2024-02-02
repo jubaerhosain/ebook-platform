@@ -3,21 +3,30 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { BookDto } from './dto/book.dto';
 import { BookQueryDto } from './dto/book-query.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BooksRepository {
-    constructor(private readonly prismaService: PrismaService) {}
+    constructor(private readonly prisma: PrismaService) {}
 
     async create(createBookDto: CreateBookDto): Promise<BookDto> {
-        const book = await this.prismaService.book.create({
+        const book = await this.prisma.book.create({
             data: createBookDto,
         });
         return book;
     }
 
+    async update(id: number, updateBookDto: UpdateBookDto): Promise<BookDto> {
+        const updatedBook = await this.prisma.book.update({
+            where: { id },
+            data: updateBookDto,
+        });
+        return updatedBook;
+    }
+
     async findOne(id: number): Promise<BookDto> {
-        const book = await this.prismaService.book.findUnique({
-            where: { id: id },
+        const book = await this.prisma.book.findUnique({
+            where: { id },
         });
         return book;
     }
@@ -40,7 +49,12 @@ export class BooksRepository {
             take: limit,
         };
 
-        const books = await this.prismaService.book.findMany(booksQuery);
+        const books = await this.prisma.book.findMany(booksQuery);
         return books;
+    }
+
+    async isExistById(id: number): Promise<boolean> {
+        const book = await this.prisma.book.findUnique({ where: { id } });
+        return book ? true : false;
     }
 }

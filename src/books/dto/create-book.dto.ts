@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber, IsPositive } from 'class-validator';
 
 export class CreateBookDto {
     @IsNotEmpty()
@@ -6,8 +6,12 @@ export class CreateBookDto {
 
     @IsNotEmpty()
     author: string;
-    
+
     @IsNotEmpty()
+    genre: string;
+
+    @IsNotEmpty()
+    @IsPositive()
     @IsNumber()
     price: number;
 }
