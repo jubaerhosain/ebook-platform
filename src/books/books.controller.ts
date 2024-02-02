@@ -10,8 +10,8 @@ export class BooksController {
     constructor(private readonly booksService: BooksService) {}
 
     @Post()
-    async create(@Body() createBookDto: CreateBookDto): Promise<BookDto> {
-        return await this.booksService.create(createBookDto);
+    create(@Body() createBookDto: CreateBookDto): Promise<BookDto> {
+        return this.booksService.create(createBookDto);
     }
 
     @Get()

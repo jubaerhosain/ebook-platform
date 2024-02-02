@@ -53,6 +53,10 @@ export class BooksRepository {
         return books;
     }
 
+    remove(id: number) {
+        throw new Error('Method not implemented.');
+    }
+
     async isExistById(id: number): Promise<boolean> {
         const book = await this.prisma.book.findUnique({ where: { id } });
         return book ? true : false;
