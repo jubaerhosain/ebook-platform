@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { NestedValidationExceptionFactory } from './exceptions/validation.exception';
+import { ValidationExceptionFactory } from './exceptions/validation.exception';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -11,7 +11,7 @@ async function bootstrap() {
             transform: true,
             whitelist: true,
             forbidNonWhitelisted: true,
-            exceptionFactory: NestedValidationExceptionFactory,
+            exceptionFactory: ValidationExceptionFactory,
         }),
     );
     await app.listen(process.env.PORT);

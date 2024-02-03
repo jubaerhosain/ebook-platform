@@ -32,12 +32,15 @@ export class BooksRepository {
     }
 
     async findAll(query: BookQueryDto): Promise<BookDto[]> {
-        const { author, sort, order, limit } = query;
+        const { author, title, sort, order, limit } = query;
 
         const booksQuery = {
             where: {
                 author: {
                     contains: author,
+                },
+                title: {
+                    contains: title,
                 },
             },
             orderBy:
