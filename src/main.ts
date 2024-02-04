@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ValidationExceptionFactory } from './exceptions/validation.exception';
 
 async function bootstrap() {
@@ -14,7 +15,11 @@ async function bootstrap() {
             exceptionFactory: ValidationExceptionFactory,
         }),
     );
-    await app.listen(process.env.PORT);
-    console.log(`App is listening on port ${process.env.PORT} ...`);
+
+    const configService = app.get(ConfigService);
+    const port = configService.get('port');
+
+    await app.listen(port);
+    console.log(`App is listening on port ${port} ...`);
 }
 bootstrap();
