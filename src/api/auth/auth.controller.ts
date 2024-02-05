@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, Body, Param, Delete, ParseIntPipe, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
@@ -7,14 +7,19 @@ import { SignupDto } from './dto/signup.dto';
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
-    @Post()
-    signup(@Body() signupDto: SignupDto) {}
+    @Post('signup')
+    signup(@Body() signupDto: SignupDto) {
+        this.authService.signup(signupDto);
+    }
 
-    @Post()
-    login(@Body() loginDto: LoginDto) {}
+    @HttpCode(HttpStatus.OK)
+    @Post('login')
+    login(@Body() loginDto: LoginDto) {
+        return this.authService.login(loginDto);
+    }
 
-    @Delete(':id')
-    logout(@Param('id', ParseIntPipe) id: number) {
-        
+    @Delete('logout')
+    logout() {
+        return this.authService.logout();
     }
 }
