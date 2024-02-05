@@ -1,21 +1,36 @@
-import { Controller, Post, Body, Param, Delete, ParseIntPipe, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Delete, HttpCode, HttpStatus, Response } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
+import { Public } from './decorators/Public';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
+    @Public()
     @Post('signup')
     signup(@Body() signupDto: SignupDto) {
-        this.authService.signup(signupDto);
+        return this.authService.signup(signupDto);
     }
 
+    @Public()
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    login(@Body() loginDto: LoginDto) {
-        return this.authService.login(loginDto);
+    async login(@Body() loginDto: LoginDto, @Response({ passthrough: true }) res: any) {
+        const { accessToken } = await this.authService.login(loginDto);
+
+        res.cookie('accessToken', accessToken, {
+            expires: new Date(new Date().getTime() + 30 * 1000),
+            sameSite: 'strict',
+            httpOnly: true,
+            signed: true,
+        });
+
+        return {
+            message: 'logged in successfully',
+            accessToken,
+        };
     }
 
     @Delete('logout')

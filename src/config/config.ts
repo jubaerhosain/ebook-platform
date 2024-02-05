@@ -1,14 +1,10 @@
-import dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 export default {
     port: process.env.PORT,
-    mysql: {
-        database: process.env.MYSQL_DB_NAME,
-        username: process.env.MYSQL_USERNAME,
-        password: process.env.MYSQL_PASSWORD,
-        host: process.env.MYSQL_HOST,
-        dialect: "mysql",
+    database: {
+        url: process.env.DATABASE_URL,
     },
     jwt: {
         expiry: process.env.JWT_EXPIRY,

@@ -1,12 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { ValidationExceptionFactory } from './exceptions/validation.exception';
+import * as cookieParser from 'cookie-parser';
+import config from './config/config';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+    
+    app.use(cookieParser(config.cookie.secret));
+
     app.setGlobalPrefix('api');
+
     app.useGlobalPipes(
         new ValidationPipe({
             transform: true,
@@ -16,11 +21,9 @@ async function bootstrap() {
         }),
     );
 
-    const configService = app.get(ConfigService);
-    const port = configService.get('port');
+    await app.listen(config.port);
 
-    await app.listen(port);
-    console.log(`App is listening on port ${port} ...`);
+    console.log(`App is listening on port ${config.port} ...`);
 }
 
 bootstrap();

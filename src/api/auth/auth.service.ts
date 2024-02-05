@@ -1,8 +1,11 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UsersRepository } from '../users/users.repository';
+import utils from 'src/utils/utils';
+import { plainToInstance } from 'class-transformer';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,26 +14,45 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    signup(signupDto: SignupDto) {
-        const user = this.usersRepository.findOneByEmail("EMAIL");
-        if (user) {
-            throw new ConflictException({ message: 'user already exists with email email@gmail.com' });
+    async signup(signupDto: SignupDto) {
+        const email = signupDto.email;
+
+        const existedUser = await this.usersRepository.findOneByEmail(email);
+        if (existedUser) {
+            throw new ConflictException({ message: `user already exists with email: ${email}` });
         }
 
-        // hash password with bcrypt
+        const hashedPassword = await utils.hashPassword(signupDto.password);
+        signupDto.password = hashedPassword;
 
-        // this.usersRepository.create(signupDto);
+        signupDto.role = 'USER';
+
+        const createUserDto = plainToInstance(CreateUserDto, signupDto);
+
+        const user = await this.usersRepository.create(createUserDto);
+        delete user.password;
+
+        return user;
     }
 
     async login(loginDto: LoginDto) {
-        // const user = await this.usersService.findOne(1);
-        // if (user?.password !== pass) {
-        //     throw new UnauthorizedException();
-        // }
-        const payload = { sub: 1, username: 'jubaer' };
+        const { email, password } = loginDto;
+        const user = await this.usersRepository.findOneByEmail(email);
+
+        if (!user) {
+            throw new UnauthorizedException({ message: `invalid email or password` });
+        }
+
+        const verified = await utils.verifyPassword(password, user.password);
+
+        if (!verified) {
+            throw new UnauthorizedException({ message: `invalid email or password` });
+        }
+
+        const payload = { sub: user.id, email: user.email, role: user.role };
+
         return {
-            message: 'logged in successfully',
-            access_token: await this.jwtService.signAsync(payload),
+            accessToken: await this.jwtService.signAsync(payload),
         };
     }
 
