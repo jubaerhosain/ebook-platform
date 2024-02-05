@@ -15,10 +15,15 @@ model Book {
   price  Float
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id       Int    @id @default(autoincrement())
   name     String @db.VarChar(30)
-  email    String @unique 
+  email    String @unique
   password String
-  role     String @default("admin") @db.VarChar(6)
+  role     Role @default(USER)
 }
