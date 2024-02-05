@@ -2,7 +2,9 @@ import { Controller, Post, Body, Delete, HttpCode, HttpStatus, Response, Get } f
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
-import { Public } from './decorators/Public';
+import { Public } from '../../decorators/public.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/enums/role.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -37,7 +39,9 @@ export class AuthController {
     refreshToken() {}
 
     @Delete('logout')
+    // @Roles(Role.USER)
     logout() {
-        return this.authService.logout();
+        return "logged out successfully";
+        // return this.authService.logout();
     }
 }

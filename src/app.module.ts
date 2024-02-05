@@ -6,7 +6,8 @@ import { AuthModule } from './api/auth/auth.module';
 import { BooksModule } from './api/books/books.module';
 import { UsersModule } from './api/users/users.module';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './api/auth/auth.guard';
+import { AuthGuard } from './guards/auth.guard';
+import { RolesGuard } from './guards/roles.guard';
 
 @Module({
     imports: [
@@ -24,6 +25,10 @@ import { AuthGuard } from './api/auth/auth.guard';
         {
             provide: APP_GUARD,
             useClass: AuthGuard,
+        },
+        {
+            provide: APP_GUARD,
+            useClass: RolesGuard,
         },
     ],
 })
