@@ -40,9 +40,11 @@ export class BooksService {
 
     async remove(id: number) {
         const isExists = await this.booksRepository.isExistById(id);
+
         if (!isExists) {
             throw new NotFoundException({ message: `book with id: ${id} was not found` });
         }
+        
         return this.booksRepository.remove(id);
     }
 }

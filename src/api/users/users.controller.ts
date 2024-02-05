@@ -13,7 +13,7 @@ export class UsersController {
     }
 
     @Get()
-    findAll() {
+    findAll(@Body() userQueryDto: any) {
         return this.usersService.findAll();
     }
 

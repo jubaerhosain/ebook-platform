@@ -1,7 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
-import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { UsersRepository } from '../users/users.repository';
 
@@ -17,6 +16,8 @@ export class AuthService {
         if (user) {
             throw new ConflictException({ message: 'user already exists with email email@gmail.com' });
         }
+
+        // hash password with bcrypt
 
         // this.usersRepository.create(signupDto);
     }
